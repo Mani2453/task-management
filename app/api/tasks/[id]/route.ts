@@ -51,7 +51,7 @@ export async function DELETE(_req: Request, context: TaskRouteContext) {
         const { id } = await context.params;
 
 		const client = await clientPromise;
-		const db = client.db();
+		const db = client.db(dbName);
 		const result = await db.collection('tasks').deleteOne({ _id: new ObjectId(id) });
 		if (result.deletedCount === 0) {
 			return new Response(JSON.stringify({ error: 'Task not found.' }), { status: 404 });

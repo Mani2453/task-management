@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
 			return NextResponse.json({ error: 'Title, status, priority, and projectId are required.' }, { status: 400 });
 		}
 		const client = await clientPromise;
-		const db = client.db();
+		const db = client.db(dbName);
 		const result = await db.collection('tasks').insertOne({ title, description, status, priority, dueDate, userId: user.userId, projectId, createdAt: new Date(), updatedAt: new Date() });
 		if (!result.acknowledged) {
 			return NextResponse.json({ error: 'Failed to create task.' }, { status: 500 });

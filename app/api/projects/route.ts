@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
 			return NextResponse.json({ error: 'Title and color are required.' }, { status: 400 });
 		}
 		const client = await clientPromise;
-		const db = client.db();
+		const db = client.db(dbName);
 		const result = await db.collection('projects').insertOne({ title, description, userId: user.userId, createdAt: new Date(), updatedAt: new Date() });
 		if (!result.acknowledged) {
 			return NextResponse.json({ error: 'Failed to create project.' }, { status: 500 });

@@ -57,7 +57,7 @@ export async function DELETE(_req: NextRequest, context: ProjectRouteContext) {
 		const { id } = await context.params;
 		
 		const client = await clientPromise;
-		const db = client.db();
+		const db = client.db(dbName);
 		const result = await db.collection('projects').deleteOne({ _id: new ObjectId(id) }); // Changed: use the awaited id
 		
 		if (result.deletedCount === 0) {
