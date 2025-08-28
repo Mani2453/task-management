@@ -1,29 +1,12 @@
-// Authentication utilities: JWT, bcrypt
-import bcrypt from 'bcryptjs';
-import { SignJWT, jwtVerify } from 'jose';
+import { NextRequest } from 'next/server';
+import { verifyJwt } from './jwt';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-min-32-characters-long';
-
-export async function hashPassword(password: string) {
-  return await bcrypt.hash(password, 12);
-}
-
-export async function comparePassword(password: string, hash: string) {
-  return await bcrypt.compare(password, hash);
-}
-
-export async function signJwt(payload: Record<string, unknown>) {
-  return await new SignJWT(payload as any)
-    .setProtectedHeader({ alg: 'HS256' })
-    .setExpirationTime('7d')
-    .sign(new TextEncoder().encode(JWT_SECRET));
-}
-
-export async function verifyJwt(token: string) {
-  try {
-    const { payload } = await jwtVerify(token, new TextEncoder().encode(JWT_SECRET));
-    return payload;
-  } catch {
-    return null;
-  }
+export async function getUserFromRequest(req: NextRequest | Request) {
+  const auth = req.headers.get('authorization');
+  if (!auth || !auth.startsWith('Bearer ')) return null;
+  const token = auth.replace('Bearer ', '').trim();
+  if (!token) return null;
+  const payload = await verifyJwt(token);
+  if (!payload || typeof payload !== 'object' || !payload.userId) return null;
+  return payload;
 }
