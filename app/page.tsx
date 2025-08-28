@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Navigation from "@/components/Navigation";
+
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -12,7 +12,7 @@ export default function Home() {
   }, [router]);
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <Navigation />
+  {/* Navigation removed from main page */}
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-16">
         <h1 className="text-4xl font-bold mb-4 text-blue-700">Task Management App</h1>
         <p className="max-w-2xl text-lg text-gray-700 mb-8 text-center">
