@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { clientPromise } from '@/lib/db';
+import { clientPromise, dbName } from '@/lib/db';
 import { projectSchema } from '@/lib/validations';
 import { getUserFromRequest } from '@/lib/auth';
 
@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 		const client = await clientPromise;
-		const db = client.db();
+		const db = client.db(dbName);
 		const projects = await db.collection('projects')
 			.find({ userId: user.userId }, { projection: { title: 1, description: 1, color: 1, userId: 1, createdAt: 1, updatedAt: 1 } })
 			.sort({ createdAt: -1 })

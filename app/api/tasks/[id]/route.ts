@@ -1,4 +1,4 @@
-import { clientPromise } from '../../../../lib/db';
+import { clientPromise, dbName } from '../../../../lib/db';
 import { ObjectId } from 'mongodb';
 import { taskSchema } from '../../../../lib/validations';
 import { getUserFromRequest } from '../../../../lib/auth';
@@ -32,7 +32,7 @@ export async function PUT(req: NextRequest, context: TaskRouteContext) {
 		const { id } = await context.params;
 
 		const client = await clientPromise;
-		const db = client.db();
+		const db = client.db(dbName);
 		const result = await db.collection('tasks').updateOne(
 			{ _id: new ObjectId(id), userId: user.userId },
 			{ $set: { title, description, status, priority, dueDate, userId: user.userId, projectId, updatedAt: new Date() } }

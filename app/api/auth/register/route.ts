@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { registerSchema } from '@/lib/validations';
-import { clientPromise } from '@/lib/db';
+import { clientPromise, dbName } from '@/lib/db';
 import { hashPassword } from '@/lib/password';
 import { signJwt } from '@/lib/jwt';
 
@@ -12,8 +12,8 @@ export async function POST(req: NextRequest) {
 			return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
 		}
 		const { name, email, password } = parsed.data;
-		const client = await clientPromise;
-		const db = client.db();
+	const client = await clientPromise;
+	const db = client.db(dbName);
 		const existing = await db.collection('users').findOne({ email });
 		if (existing) {
 			return NextResponse.json({ error: 'Email already registered' }, { status: 409 });

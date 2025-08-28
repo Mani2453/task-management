@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { loginSchema } from '@/lib/validations';
-import { clientPromise } from '@/lib/db';
+import { clientPromise, dbName } from '@/lib/db';
 import { comparePassword } from '@/lib/password';
 import { signJwt } from '@/lib/jwt';
 
@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
 		}
 		const { email, password } = parsed.data;
 		const client = await clientPromise;
-		const db = client.db();
+		const db = client.db(dbName);
 		const user = await db.collection('users').findOne({ email });
 		if (!user) {
 			return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
