@@ -8,6 +8,7 @@ import { useToast } from '../../components/Toast';
 import AnimatedCard from '../components/AnimatedCard';
 // import FloatingActionButton from '../components/FloatingActionButton';
 import { PlusIcon, PencilSquareIcon, TrashIcon, FolderOpenIcon } from '@heroicons/react/24/outline';
+import { useConfirmDialog } from '../../components/ConfirmDialog';
 
 export type Project = {
   _id: string;
@@ -20,6 +21,7 @@ export type Project = {
 
 export default function ProjectsPage() {
   const { showToast } = useToast();
+  const { confirm } = useConfirmDialog();
 
   const [projects, setProjects] = useState<Project[]>([]);
   const [createLoading, setCreateLoading] = useState(false);
@@ -74,7 +76,8 @@ export default function ProjectsPage() {
 
   // ...existing code...
   async function handleDeleteProject(id: string) {
-  if (!window.confirm('Are you sure you want to delete this project?')) return;
+    const confirmed = await confirm('Are you sure you want to delete this project?');
+    if (!confirmed) return;
     setDeleteLoadingId(id);
     setError('');
     try {
