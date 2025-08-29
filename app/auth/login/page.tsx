@@ -1,8 +1,11 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import axios from "@/lib/axios";
 import { useToast } from "@/components/Toast";
 import { useRouter } from "next/navigation";
+import AnimatedCard from '../../components/AnimatedCard';
+import { LockClosedIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
 
 export default function LoginPage() {
 	const [form, setForm] = useState({ email: "", password: "" });
@@ -33,44 +36,51 @@ export default function LoginPage() {
 		}
 	}
 
-	return (
-		<main className="flex min-h-screen items-center justify-center bg-gray-50">
-			<div className="w-full max-w-md p-8 bg-white rounded-lg shadow">
-				<h1 className="text-2xl font-bold mb-4">Login</h1>
-				<form className="space-y-4" onSubmit={handleSubmit}>
-					<div>
-						<label className="block text-sm font-medium mb-1">Email</label>
-						<input
-							type="email"
-							className="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400"
-							value={form.email}
-							onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-							required
-						/>
+		return (
+			<main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-200 via-blue-100 to-pink-100 transition-colors duration-500">
+				<AnimatedCard className="w-full max-w-md p-8 backdrop-blur-md bg-white/70 border border-white/40 shadow-2xl">
+					<div className="flex flex-col items-center mb-6">
+						<LockClosedIcon className="w-12 h-12 text-indigo-400 mb-2" />
+						<h1 className="text-3xl font-extrabold text-indigo-900 mb-2 tracking-tight drop-shadow flex items-center gap-2">Login</h1>
 					</div>
-					<div>
-						<label className="block text-sm font-medium mb-1">Password</label>
-						<input
-							type="password"
-							className="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400"
-							value={form.password}
-							onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
-							required
-							minLength={8}
-						/>
-					</div>
-					<button
-						type="submit"
-						className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded transition"
-						disabled={loading}
-					>
-						{loading ? "Logging in..." : "Login"}
-					</button>
-				</form>
-						<p className="mt-4 text-sm text-gray-500">
-							Don&apos;t have an account? <a href="/auth/register" className="text-blue-600 hover:underline">Register</a>
-						</p>
-			</div>
-		</main>
-	);
+					<form className="space-y-4" onSubmit={handleSubmit}>
+						<div>
+							<label className="block text-xs font-semibold text-gray-700 mb-1">Email</label>
+							<input
+								type="email"
+								className="w-full border p-2 rounded text-base focus:ring-2 focus:ring-indigo-300 transition placeholder:italic placeholder:text-indigo-200"
+								placeholder="Enter your email"
+								value={form.email}
+								onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+								required
+							/>
+						</div>
+						<div>
+							<label className="block text-xs font-semibold text-gray-700 mb-1">Password</label>
+							<input
+								type="password"
+								className="w-full border p-2 rounded text-base focus:ring-2 focus:ring-indigo-300 transition placeholder:italic placeholder:text-indigo-200"
+								placeholder="Enter your password"
+								value={form.password}
+								onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
+								required
+								minLength={8}
+							/>
+						</div>
+						<button
+							type="submit"
+							className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-full shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
+							disabled={loading}
+						>
+							<ArrowRightOnRectangleIcon className="w-5 h-5" />
+							{loading ? "Logging in..." : "Login"}
+						</button>
+					</form>
+					<p className="mt-4 text-sm text-gray-500 text-center">
+						Don&apos;t have an account?{' '}
+						<a href="/auth/register" className="text-indigo-600 hover:underline transition">Register</a>
+					</p>
+				</AnimatedCard>
+			</main>
+		);
 }

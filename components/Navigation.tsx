@@ -14,14 +14,29 @@ export default function Navigation() {
 		window.location.href = '/';
 	}
 
+		return (
+			<nav className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-indigo-200/80 via-white/80 to-pink-100/80 backdrop-blur-xl shadow-lg p-4 flex gap-6 justify-center border-b border-white/40">
+				<NavLink href="/dashboard">Dashboard</NavLink>
+				<NavLink href="/projects">Projects</NavLink>
+				<NavLink href="/tasks">Tasks</NavLink>
+				{!loggedIn && <NavLink href="/auth/login">Login</NavLink>}
+				{!loggedIn && <NavLink href="/auth/register">Register</NavLink>}
+				{loggedIn && <button onClick={handleLogout} className="font-semibold text-red-600 relative px-2 py-1 transition-colors duration-200 group">
+					<span className="relative z-10">Logout</span>
+					<span className="absolute left-0 bottom-0 w-0 h-0.5 bg-gradient-to-r from-red-400 to-red-600 transition-all duration-300 group-hover:w-full"></span>
+				</button>}
+			</nav>
+		);
+// Animated underline NavLink
+function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
 	return (
-		<nav className="fixed top-0 left-0 w-full z-50 bg-white/70 backdrop-blur-md shadow-md p-4 flex gap-6 justify-center border-b border-gray-200">
-			<a href="/dashboard" className="font-semibold text-blue-600 hover:underline">Dashboard</a>
-			<a href="/projects" className="font-semibold text-blue-600 hover:underline">Projects</a>
-			<a href="/tasks" className="font-semibold text-blue-600 hover:underline">Tasks</a>
-			{!loggedIn && <a href="/auth/login" className="font-semibold text-blue-600 hover:underline">Login</a>}
-			{!loggedIn && <a href="/auth/register" className="font-semibold text-blue-600 hover:underline">Register</a>}
-			{loggedIn && <button onClick={handleLogout} className="font-semibold text-red-600 hover:underline">Logout</button>}
-		</nav>
+		<a
+			href={href}
+			className="font-semibold text-indigo-700 relative px-2 py-1 transition-colors duration-200 group"
+		>
+			<span className="relative z-10">{children}</span>
+			<span className="absolute left-0 bottom-0 w-0 h-0.5 bg-gradient-to-r from-indigo-400 to-pink-400 transition-all duration-300 group-hover:w-full"></span>
+		</a>
 	);
+}
 }
